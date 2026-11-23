@@ -437,7 +437,7 @@ def fourier_signal_coefficients(peak_magnitudes, peak_frequencies, peak_phases):
 
 
 def xqifft(time, signal, zero_padding=1, unwrap_phase=True,
-           side_lobe_threshold=0.099):
+           side_lobe_threshold=0.0099):
 
     # Get signal time resolution
     dt = time_resolution(time)
