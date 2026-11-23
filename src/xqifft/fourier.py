@@ -85,6 +85,19 @@ class FourierSeries:
         return float(values)
 
 
+def wrap_phase(phase: FloatArray) -> FloatArray:
+    """Return phases wrapped into the interval [-pi, pi).
+
+    Args:
+        phase (FloatArray): Phases, in rad. It is not changed.
+
+    Returns:
+        FloatArray: The same angles, in rad, in [-pi, pi).
+    """
+    wrapped: FloatArray = (phase + np.pi) % (2 * np.pi) - np.pi
+    return wrapped
+
+
 def series_from_peaks(
     magnitudes: FloatArray, frequencies: FloatArray, phases: FloatArray
 ) -> FourierSeries:
@@ -101,10 +114,13 @@ def series_from_peaks(
             in the unit of the signal.
         frequencies (FloatArray): Frequency of each peak, sorted, in Hz, from
             negative to positive.
-        phases (FloatArray): Phase of the spectrum at each peak, in rad.
+        phases (FloatArray): Phase of the spectrum at each peak, in rad. It
+            may be unwrapped; the phases of the series are wrapped into
+            [-pi, pi).
 
     Returns:
-        FourierSeries: The DC offset and the positive-frequency harmonics.
+        FourierSeries: The DC offset and the positive-frequency harmonics. The
+        sign of the offset comes from the phase of the DC peak (0 or pi).
     """
     count = len(magnitudes)
     first_harmonic = (count + 1) // 2
@@ -113,11 +129,11 @@ def series_from_peaks(
         offset = 0.0
     else:
         middle = count // 2
-        offset = float(magnitudes[middle])
+        offset = float(magnitudes[middle] * np.cos(phases[middle]))
 
     return FourierSeries(
         offset=offset,
         amplitudes=2 * magnitudes[first_harmonic:],
         frequencies=frequencies[first_harmonic:],
-        phases=phases[first_harmonic:],
+        phases=wrap_phase(phases[first_harmonic:]),
     )

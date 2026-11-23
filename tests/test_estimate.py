@@ -20,7 +20,7 @@ def make_series(offset: float) -> FourierSeries:
     )
 
 
-@pytest.mark.parametrize("offset", [0.0, 3.0])
+@pytest.mark.parametrize("offset", [0.0, 3.0, -3.0])
 @pytest.mark.parametrize("unwrap_phase", [False, True])
 def test_xqifft_recovers_coefficients(offset: float, unwrap_phase: bool) -> None:
     """Estimate offset, amplitudes and frequencies of five cycles closely."""
@@ -33,8 +33,7 @@ def test_xqifft_recovers_coefficients(offset: float, unwrap_phase: bool) -> None
     assert estimate.offset == pytest.approx(offset, abs=1e-9)
     np.testing.assert_allclose(estimate.amplitudes, true.amplitudes, rtol=1e-5)
     np.testing.assert_allclose(estimate.frequencies, true.frequencies, rtol=2e-4)
-    phase_error = np.angle(np.exp(1j * (estimate.phases - true.phases)))
-    np.testing.assert_allclose(phase_error, 0.0, atol=2e-2)
+    np.testing.assert_allclose(estimate.phases, true.phases, atol=2e-2)
 
 
 def test_xqifft_threshold_drops_small_harmonics() -> None:

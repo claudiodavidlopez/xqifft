@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from xqifft.fourier import FourierSeries, series_from_peaks
+from xqifft.fourier import FourierSeries, series_from_peaks, wrap_phase
 
 
 @pytest.fixture
@@ -84,6 +84,17 @@ def test_series_copies_and_freezes_arrays() -> None:
         series.amplitudes[0] = 5.0
 
 
+def test_wrap_phase() -> None:
+    """Map angles into [-pi, pi) without changing them modulo 2 * pi."""
+    phase = np.array([0.0, np.pi, -np.pi, 3 * np.pi / 2, -86.3950735816])
+
+    wrapped = wrap_phase(phase)
+
+    np.testing.assert_allclose(wrapped, [0.0, -np.pi, -np.pi, -np.pi / 2, 1.5695206])
+    assert np.all(wrapped >= -np.pi)
+    assert np.all(wrapped < np.pi)
+
+
 def test_series_from_symmetric_peaks_without_offset() -> None:
     """Build the harmonics from the positive half of an even number of peaks."""
     series = series_from_peaks(
@@ -98,14 +109,15 @@ def test_series_from_symmetric_peaks_without_offset() -> None:
     np.testing.assert_allclose(series.phases, [0.1, 0.2])
 
 
-def test_series_from_peaks_with_offset() -> None:
-    """Take the offset from the middle peak."""
+@pytest.mark.parametrize(("dc_phase", "offset"), [(0.0, 3.0), (np.pi, -3.0)])
+def test_series_from_peaks_with_offset(dc_phase: float, offset: float) -> None:
+    """Take the offset from the middle peak, with its sign from its phase."""
     series = series_from_peaks(
         magnitudes=np.array([2.0, 3.0, 2.0]),
         frequencies=np.array([-50.0, 0.0, 50.0]),
-        phases=np.array([-0.1, 0.0, 0.1]),
+        phases=np.array([-0.1, dc_phase, 0.1 + 4 * np.pi]),
     )
 
-    assert series.offset == pytest.approx(3.0)
+    assert series.offset == pytest.approx(offset)
     np.testing.assert_array_equal(series.amplitudes, [4.0])
     np.testing.assert_allclose(series.phases, [0.1])
