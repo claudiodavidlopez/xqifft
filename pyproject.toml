@@ -1,0 +1,20 @@
+[project]
+name = "xqifft"
+version = "0.1.0"
+description = "Estimate the Fourier coefficients of a signal with the XQIFFT algorithm."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Claudio David López", email = "claudio.d.lopez@gmail.com" }]
+requires-python = ">=3.12"
+dependencies = ["numpy>=1.26", "scipy>=1.11"]
+
+[project.urls]
+Repository = "https://github.com/claudiodavidlopez/xqifft"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["uv_build>=0.12.2,<0.13.0"]
+build-backend = "uv_build"

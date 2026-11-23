@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from context import xqifft
+import xqifft
 
 
 CAPTURED_CICLES = 5

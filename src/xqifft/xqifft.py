@@ -443,7 +443,7 @@ def xqifft(time, signal, zero_padding=1, unwrap_phase=True,
     dt = time_resolution(time)
 
     # Generate window function
-    window = sg.blackman(len(signal), sym=False)
+    window = sg.windows.blackman(len(signal), sym=False)
 
     # Get complex spectrum
     dspectrum, dspectrum_frequency = windowed_fft(

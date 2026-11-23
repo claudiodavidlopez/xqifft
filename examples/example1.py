@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy.signal as sg
 
-from context import xqifft
+import xqifft
 
 
 ZERO_PADDING = 10.0
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     # Generate signal
     s = xqifft.fourier_signal(t, A_0, A_n, f_n, p_n)
     # Generate window
-    window = sg.blackman(s.size, sym=False)
+    window = sg.windows.blackman(s.size, sym=False)
 
     # Get complex spectrum
     S, S_f = xqifft.windowed_fft(s, dt, window, padding=ZERO_PADDING)
