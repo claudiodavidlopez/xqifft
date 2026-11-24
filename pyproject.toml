@@ -1,0 +1,53 @@
+[project]
+name = "xqifft"
+version = "0.2.0"
+description = "Estimate the Fourier coefficients of a signal with the XQIFFT algorithm."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Claudio David López", email = "claudio.d.lopez@gmail.com" }]
+requires-python = ">=3.12"
+dependencies = ["numpy>=1.26", "scipy>=1.11.2"]
+
+[project.urls]
+Repository = "https://github.com/claudiodavidlopez/xqifft"
+
+[dependency-groups]
+dev = [
+    "matplotlib>=3.8",
+    "mypy>=1.13",
+    "pytest>=8",
+    "pytest-cov>=6",
+    "ruff>=0.8",
+    "scipy-stubs>=1.14",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.2,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC", "RUF", "PT", "D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+strict = true
+files = ["src", "tests", "examples"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--strict-markers", "--import-mode=importlib"]
+filterwarnings = ["error"]
+
+[tool.coverage.run]
+branch = true
+source = ["xqifft"]
+
+[tool.coverage.report]
+fail_under = 100
+show_missing = true
