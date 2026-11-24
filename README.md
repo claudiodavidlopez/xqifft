@@ -21,7 +21,6 @@ The XQIFFT was proposed by K. J. Werner in
 - [Accuracy and limitations](#accuracy-and-limitations)
 - [Development](#development)
 - [Design decisions](#design-decisions)
-- [Citing](#citing)
 - [License](#license)
 
 ## How it works
@@ -207,19 +206,6 @@ default branch, matching `version` in `pyproject.toml`.
   no generated documentation.
 - **CI runs on GitHub Actions** in addition to the pre-push hook, because
   the repository is public and receives changes through pull requests.
-
-## Citing
-
-If you use this package in your research, please cite the paper that
-proposed the algorithm:
-
-> K. J. Werner, "The XQIFFT: Increasing the accuracy of quadratic
-> interpolation of spectral peaks via exponential magnitude spectrum
-> weighting," in Proceedings of the International Computer Music
-> Conference (ICMC), 2015.
-
-and, if relevant, the paper this implementation was written for:
-<https://doi.org/10.1109/ACCESS.2019.2907773>.
 
 ## License
 
